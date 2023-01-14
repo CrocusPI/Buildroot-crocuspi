@@ -1,0 +1,264 @@
+/*
+ * Copyright (C) 2016 Icenowy Zheng <icenowy@aosc.xyz>
+ *	Modified by Yusuf Yalcin Kardas <yusufyalcinkardas@gmail.com> 2022
+ *
+ * This file is dual-licensed: you can use it either under the terms
+ * of the GPL or the X11 license, at your option. Note that this dual
+ * licensing only applies to this file, and not this project as a
+ * whole.
+ *
+ *  a) This file is free software; you can redistribute it and/or
+ *     modify it under the terms of the GNU General Public License as
+ *     published by the Free Software Foundation; either version 2 of the
+ *     License, or (at your option) any later version.
+ *
+ *     This file is distributed in the hope that it will be useful,
+ *     but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *     GNU General Public License for more details.
+ *
+ * Or, alternatively,
+ *
+ *  b) Permission is hereby granted, free of charge, to any person
+ *     obtaining a copy of this software and associated documentation
+ *     files (the "Software"), to deal in the Software without
+ *     restriction, including without limitation the rights to use,
+ *     copy, modify, merge, publish, distribute, sublicense, and/or
+ *     sell copies of the Software, and to permit persons to whom the
+ *     Software is furnished to do so, subject to the following
+ *     conditions:
+ *
+ *     The above copyright notice and this permission notice shall be
+ *     included in all copies or substantial portions of the Software.
+ *
+ *     THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+ *     EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES
+ *     OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+ *     NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT
+ *     HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
+ *     WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+ *     FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+ *     OTHER DEALINGS IN THE SOFTWARE.
+ *
+ *
+ */
+
+/dts-v1/;
+#include "sun8i-v3s.dtsi"
+#include "sunxi-common-regulators.dtsi"
+
+/ {
+	model = "Crocus Pi Zero";
+	compatible = "crocuspi,crocuspi-zero", "allwinner,sun8i-v3s";
+
+	aliases {
+		serial0 = &uart0;
+		ethernet0 = &emac;
+	};
+
+	chosen {
+		stdout-path = "serial0:115200n8";
+		/delete-node/ framebuffer@0;
+		framebuffer-lcd {
+		status = "disable";
+		 };
+	
+	};
+	
+	leds {
+		compatible = "gpio-leds";
+		status = "disable";
+		blue_led {
+			label = "crocuspi:blue:usr";
+			gpios = <&pio 4 24 GPIO_ACTIVE_LOW>; /* PE24 */
+		};
+
+		red_led {
+			label = "crocuspi:red:usr";
+			gpios = <&pio 4 23 GPIO_ACTIVE_LOW>; /* PE23 */
+		};
+	};
+	
+	soc {
+		ehci0: usb@1c1a000 {
+				compatible = "allwinner,sun8i-v3s-ehci", "generic-ehci";
+				reg = <0x01c1a000 0x100>;
+				interrupts = <GIC_SPI 72 IRQ_TYPE_LEVEL_HIGH>;
+				clocks = <&ccu CLK_BUS_EHCI0>, <&ccu CLK_BUS_OHCI0>;
+				resets = <&ccu RST_BUS_EHCI0>, <&ccu RST_BUS_OHCI0>;
+				status = "disabled";
+			};
+
+		ohci0: usb@1c1a400 {
+				compatible = "allwinner,sun8i-v3s-ohci", "generic-ohci";
+				reg = <0x01c1a400 0x100>;
+				interrupts = <GIC_SPI 73 IRQ_TYPE_LEVEL_HIGH>;
+				clocks = <&ccu CLK_BUS_EHCI0>, <&ccu CLK_BUS_OHCI0>,<&ccu CLK_USB_OHCI0>;
+				resets = <&ccu RST_BUS_EHCI0>, <&ccu RST_BUS_OHCI0>;
+				status = "disabled";
+			};
+		};	
+	
+};
+
+&reg_vcc3v0 {
+	status = "okay";
+};
+
+&reg_vcc3v3 {
+	status = "okay";
+};
+
+&reg_vcc5v0 {
+	status = "okay";
+};
+
+&emac {
+	allwinner,leds-active-high;
+	status = "okay";
+};
+
+&mmc0 {
+	pinctrl-0 = <&mmc0_pins>;
+	pinctrl-names = "default";
+	broken-cd;
+	bus-width = <4>;
+	vmmc-supply = <&reg_vcc3v3>;
+	status = "okay";
+};
+
+
+	
+&mmc1 {
+	#address-cells = <1>;
+	#size-cells = <0>;
+	broken-cd;
+	bus-width = <4>;
+	vmmc-supply = <&reg_vcc3v3>;
+	status = "okay";
+};
+
+
+&uart0 {
+	pinctrl-0 = <&uart0_pb_pins>;
+	pinctrl-names = "default";
+	status = "okay";
+};
+
+&uart1{
+	pinctrl-0 = <&uart1_pe_pins>;
+	pinctrl-names = "default";
+	status = "okay";
+};
+
+&uart2{
+	pinctrl-0 = <&uart2_pins>;
+	pinctrl-names = "default";
+	status = "disable";
+};
+
+
+
+&ehci0 {
+ phys = <&usbphy 0>;
+ phy-names = "usb";
+ status = "okay";
+};
+
+&ohci0 {
+ phys = <&usbphy 0>;
+ phy-names = "usb";
+ status = "okay";
+};
+
+&i2c0{
+ pinctrl-0 = <&i2c0_pins>;
+ pinctrl-names = "default";
+ status="okay";
+};
+
+&i2c1{
+ pinctrl-0 = <&i2c1_pe_pins>;
+ pinctrl-names = "default";
+ status="disabled";
+};
+
+&spi0{
+	status="okay";
+	
+	ili9341@0 {
+			#address-cells = <1>;
+			#size-cells = <1>;
+			compatible = "ilitek,ili9341";
+			reg = <0>;
+			spi-max-frequency = <50000000>;
+            rotation = <0>;
+            bgr;
+            fps = <30>;
+            buswidth = <8>;
+            reset-gpios = <&pio 4 16 GPIO_ACTIVE_LOW>;
+            dc-gpios = <&pio 4 10 GPIO_ACTIVE_HIGH>;
+            debug = <1>;
+	}; 
+
+};
+
+&usb_otg {
+	dr_mode = "otg";
+	status = "okay";
+};
+
+&usbphy {
+	pinctrl-0 = <&usb0_id_detect_pin>;
+	usb0_id_det-gpios = <&pio 5 6 GPIO_ACTIVE_LOW>;
+	status = "okay";
+};
+
+&codec{
+	allwinner,audio-routing = "Headphone", "HP", "Headphone", "HPCOM", "MIC1", "Mic", "Mic", "HBIAS";
+	status="okay";
+};
+
+&pwm {
+        pinctrl-names = "default";
+        pinctrl-0 = <&pwm0_pins>, <&pwm1_pins>;
+        status = "disable";
+};
+
+&pio {
+	vcc-pb-supply = <&reg_vcc3v3>;
+	vcc-pc-supply = <&reg_vcc3v3>;
+	vcc-pe-supply = <&reg_vcc3v3>;
+	vcc-pf-supply = <&reg_vcc3v3>;
+	vcc-pg-supply = <&reg_vcc3v3>;
+
+
+	usb0_id_detect_pin: usbid@0 {
+		pins = "PF6";
+		function = "gpio_in";
+	};
+	
+	wifi_rst_pin: wifi_rst@0 {
+		pins = "PE14";
+		functions = "gpio_out";
+		output-low;
+		};
+   
+	pwm0_pins: pwm0 {
+		pins = "PB4";
+		function = "pwm0";
+		};
+	
+	pwm1_pins: pwm1 {
+		pins = "PB5";
+		function = "pwm1";
+		};
+	
+	uart1_pe_pins: uart1-pe-pins {
+		pins = "PE21", "PE22";
+		function = "uart1";
+		bias-pull-up;
+		};
+
+};
+
