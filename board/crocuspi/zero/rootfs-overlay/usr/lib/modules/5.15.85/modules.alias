@@ -1,0 +1,3 @@
+# Aliases extracted from modules themselves.
+alias platform:smccc_trng arm_smccc_trng
+alias sdio:c*v6666d1111* esp8089
