@@ -222,7 +222,7 @@
 &pwm {
         pinctrl-names = "default";
         pinctrl-0 = <&pwm0_pins>, <&pwm1_pins>;
-        status = "disable";
+        status = "okay";
 };
 
 &pio {
