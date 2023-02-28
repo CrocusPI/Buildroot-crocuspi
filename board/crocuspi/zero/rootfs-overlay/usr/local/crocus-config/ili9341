@@ -1,0 +1,10 @@
+#address-cells = <1>;
+#size-cells = <1>;
+compatible = "ilitek,ili9341";
+spi-max-frequency = <50000000>;
+rotation = <0>;
+bgr;
+fps = <30>;
+buswidth = <8>;
+reset-gpios = <&pio 4 16 1>;
+dc-gpios = <&pio 4 10 0>;

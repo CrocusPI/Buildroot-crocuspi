@@ -1,0 +1,3 @@
+compatible = "dh,dhcom-board";	
+spi-max-frequency = <50000000>;
+status="okay";

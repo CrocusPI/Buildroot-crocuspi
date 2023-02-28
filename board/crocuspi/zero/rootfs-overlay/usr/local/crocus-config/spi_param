@@ -1,0 +1,13 @@
+PB0 14 12 6 1 0 0 0 0 spidev1
+PB1 16 12 7 1 1 0 0 0 spidev1
+PB2 5 12 8 1 2 0 0 0 spidev0
+PB3 12 12 9 1 3 0 0 0 spidev0
+PB4 11 12 10 1 4 0 0 0 spidev0
+PB5 20 12 11 1 5 0 0 0 spidev1
+PB6 22 12 12 1 6 0 0 0 spidev0
+PB7 24 12 13 1 7 1 0 0 spidev1
+PE7 15 12 14 4 7 0 0 0 spidev0
+PE10 1 12 15 4 10 0 0 0 spidev0
+PE16 9 12 16 4 16 0 0 0 spidev1
+PE21 19 12 17 4 21 0 0 0 spidev1
+PE22 17 12 18 4 22 0 0 0 spidev0
