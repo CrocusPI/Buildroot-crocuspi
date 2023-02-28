@@ -54,6 +54,7 @@
 	aliases {
 		serial0 = &uart0;
 		ethernet0 = &emac;
+		spi0 = &spi0;
 	};
 
 	chosen {
@@ -102,7 +103,7 @@
 };
 
 &reg_vcc3v0 {
-	status = "okay";
+	status = "disabled";
 };
 
 &reg_vcc3v3 {
@@ -110,7 +111,7 @@
 };
 
 &reg_vcc5v0 {
-	status = "okay";
+	status = "disabled";
 };
 
 &emac {
@@ -137,6 +138,18 @@
 	vmmc-supply = <&reg_vcc3v3>;
 	status = "okay";
 };
+
+&mmc2 {
+	pinctrl-names = "default";
+	pinctrl-0 = <&mmc2_pins>;
+	#address-cells = <1>;
+	#size-cells = <0>;
+	broken-cd;
+	bus-width = <1>;
+	vmmc-supply = <&reg_vcc3v3>;
+	status = "disabled";
+};
+
 
 
 &uart0 {
@@ -185,21 +198,8 @@
 
 &spi0{
 	status="okay";
-	
-	ili9341@0 {
-			#address-cells = <1>;
-			#size-cells = <1>;
-			compatible = "ilitek,ili9341";
-			reg = <0>;
-			spi-max-frequency = <50000000>;
-            rotation = <0>;
-            bgr;
-            fps = <30>;
-            buswidth = <8>;
-            reset-gpios = <&pio 4 16 GPIO_ACTIVE_LOW>;
-            dc-gpios = <&pio 4 10 GPIO_ACTIVE_HIGH>;
-            debug = <1>;
-	}; 
+	pinctrl-names = "default";
+	cs-gpios = <0>;
 
 };
 
@@ -231,7 +231,7 @@
 	vcc-pe-supply = <&reg_vcc3v3>;
 	vcc-pf-supply = <&reg_vcc3v3>;
 	vcc-pg-supply = <&reg_vcc3v3>;
-
+	
 
 	usb0_id_detect_pin: usbid@0 {
 		pins = "PF6";
@@ -258,6 +258,12 @@
 		pins = "PE21", "PE22";
 		function = "uart1";
 		bias-pull-up;
+		};
+		
+	mmc2_pins: mmc2-pins {
+		pins = "PC0", "PC1", "PC2", "PC3";
+		function = "mmc2";
+
 		};
 
 };

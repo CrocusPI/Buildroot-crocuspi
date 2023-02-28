@@ -23,6 +23,7 @@ BR2_LINUX_KERNEL_PATCH="board/crocuspi/zero/patch/linux/"
 BR2_LINUX_KERNEL_USE_CUSTOM_CONFIG=y
 BR2_LINUX_KERNEL_CUSTOM_CONFIG_FILE="board/crocuspi/zero/config/linux/linux_crocuspi_zero_defconfig"
 BR2_LINUX_KERNEL_DTS_SUPPORT=y
+BR2_LINUX_KERNEL_DTB_OVERLAY_SUPPORT=y
 BR2_LINUX_KERNEL_CUSTOM_DTS_PATH="board/allwinner-generic/sun8i-v3s/dts/linux/sun8i-v3s-linux.dtsi board/crocuspi/zero/dts/sun8i-v3s-crocuspi-zero-linux.dts"
 BR2_PACKAGE_ALSA_UTILS=y
 BR2_PACKAGE_ALSA_UTILS_ALSACONF=y

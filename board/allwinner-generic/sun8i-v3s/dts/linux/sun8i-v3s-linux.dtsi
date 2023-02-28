@@ -519,7 +519,7 @@
 			clocks = <&ccu CLK_BUS_SPI0>, <&ccu CLK_SPI0>;
 			clock-names = "ahb", "mod";
 			pinctrl-names = "default";
-			pinctrl-0 = <&spi0_pins>;
+			pinctrl-0 = <&spi0_pins>,<&spi0_cs_pin>;
 			resets = <&ccu RST_BUS_SPI0>;
 			status = "disabled";
 			#address-cells = <1>;
