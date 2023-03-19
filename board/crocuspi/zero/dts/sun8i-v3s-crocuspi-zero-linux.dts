@@ -117,6 +117,8 @@
 &emac {
 	allwinner,leds-active-high;
 	status = "okay";
+	tx-delay = <0x07>;
+	rx-delay = <0x04>;
 };
 
 &mmc0 {
